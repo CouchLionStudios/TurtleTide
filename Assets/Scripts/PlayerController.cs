@@ -1,33 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// PlayerController.cs governs the Player GameObject, as well as taking orders from the PlayerInput system to move, jump, etc.
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
-
     CharacterController characterController;
     Vector3 direction;
 
-    int desiredLane = 1; // 0 left, 1 center, 2 right
-    float lerpBoundary = .01f;
+    int   desiredLane = 1; // 0 left, 1 center, 2 right - This is the new lane after player inputs a button
+    float lerpBoundary = .01f; // After we get this close to destination, just set player there
+
     public static bool IsInputEnabled = true;
-    public bool isJumping = false;
-    bool isGrounded = true;
-    [SerializeField] float laneDistance = 4;  // distance between 2 lanes
+    public        bool isJumping = false;
+
+    [SerializeField] float laneDistance = 4;  // distance between our lanes in Unity measurements
+
     [Header("Set in Inspector")]
     [SerializeField] float forwardSpeed;
     [SerializeField] float jumpHeight;
     [SerializeField] float gravityValue;
 
     [SerializeField] GameObject mainCanvas;
-
-    Vector3 playerVelocity;
-
     PlayerInput playerInput;
     
-
     // Start is called before the first frame update
     void Start()
     {
@@ -69,11 +67,18 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
+    /// <summary>
+    /// Checks if testValue is between bound1 and bound2, and returns the result in true/false.
+    /// </summary>
     public bool IsBetween(float testValue, float bound1, float bound2)
     {
         return (testValue >= Math.Min(bound1, bound2) && testValue <= Math.Max(bound1, bound2));
     }
 
+    /// <summary>
+    /// Checks our PlayerInput system for left or right inputs.  Will not go out of bounds
+    /// </summary>
     public void LaneMovement() 
     {
         if (playerInput.actions["MoveRight"].WasPressedThisFrame() && desiredLane < 2)
@@ -86,6 +91,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks our PlayerInput system for jump inputs.  Can not double jump.
+    /// </summary>
     public void JumpMovement()
     {
         if (playerInput.actions["Jump"].WasPressedThisFrame() && characterController.isGrounded)
@@ -104,8 +112,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// When another GameObject with a special "Trigger" collider touches us, we will
-    /// Take damage, or even gameOver
+    /// When another GameObject with a special "Trigger" collider touches us, we will hit gameOver state
     /// </summary>
     /// <param name="other">Collider that hit us</param>
     private void OnTriggerEnter(Collider other)

@@ -1,15 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// SpawnerController.cs is for , such as managing new ground, enmvironment changes, etc.
+/// </summary>
 public class SpawnerController : MonoBehaviour
 {
+    // TODO: As we are now spawning ground tiles soon, this should be less focused on enemies only.
+    // - We need to accept enemy, obstacles, and ground spawnables.  Perhaps use inheritance to reduce clutter?
+    // - Save laneDistance for this and playerController to a ScriptableObject.
+
     [SerializeField] List<GameObject> potentialObstacles;
-    public float MyCooldown;
-    float laneDistance = 3;  // distance between 2 lanes
+    public float MyCooldown; // set in Inspector
     public float forwardSpeed = .1f;
-    // Debug.Log((int) Time.timeSinceLevelLoad); use this + time.timescale maybe?  both at once for juice
+
+    float laneDistance = 4;  // distance between 2 lanes
+
     int currentLane;
     int pastLane = -1;
     //int pastPastLane = 1; for if we have more than 3 lanes
@@ -20,12 +27,24 @@ public class SpawnerController : MonoBehaviour
         InvokeRepeating("Spawn", 0, MyCooldown);
     }
 
+    // Testing only
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Alpha1))
+    //    {
+    //        Spawn();
+    //    }
+    //}
+
     void Spawn()
     { 
-        // TODO: this is all bad and should be more sensible
+        // TODO:
+        // - Re-implement some kind of non-repeat system for variety
+        // - Possibly add way to lower cooldown, for logarithmically faster spawning? (increasing difficulty)
 
-        GameObject newFella = Instantiate(potentialObstacles[UnityEngine.Random.Range(0, potentialObstacles.Count)], transform);
-        BasicEnemy enemyScript = newFella.GetComponent<BasicEnemy>();
+        GameObject newSpawnable = Instantiate(potentialObstacles[UnityEngine.Random.Range(0, potentialObstacles.Count)], transform);
+        BasicEnemy enemyScript = newSpawnable.GetComponent<BasicEnemy>();
+
         enemyScript.GetAllSpawnables();
 
         // Get a random viable lane, but dont repeat it more than twice
@@ -36,7 +55,9 @@ public class SpawnerController : MonoBehaviour
         //}
         //while (currentLane == pastLane); //  && currentLane == pastPastLane
 
-        newFella.transform.position = new Vector3(transform.position.x + (currentLane * laneDistance), transform.position.y, transform.position.z);
+        // set up our variables and send it off
+        newSpawnable.transform.position = new Vector3(transform.position.x + (currentLane * laneDistance), transform.position.y, transform.position.z);
+
         enemyScript.forwardSpeed = forwardSpeed; 
 
         //update our random number checkers
@@ -53,12 +74,4 @@ public class SpawnerController : MonoBehaviour
             script.forwardSpeed = 0f;
         }
     }
-    // Testing only
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        Spawn();
-    //    }
-    //}
 }
