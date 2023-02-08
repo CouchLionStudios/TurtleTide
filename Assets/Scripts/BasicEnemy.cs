@@ -57,21 +57,5 @@ public class BasicEnemy : MonoBehaviour
     void AddIfTrue(int laneNum, bool isUseableLane)
     {
         if (isUseableLane) { acceptableLanes.Add(laneNum, isUseableLane); Debug.Log("BasicEnemy.cs - AddIfTrue lane: " + laneNum); }
-    // Update is called once per frame
-    void Update()
-    {
-        transform.Translate(0, 0, -forwardSpeed);
-        if(transform.position.z < -80)
-        {
-            Debug.Log("Pew");
-            Destroy(gameObject);
-            //gameObject.SetActive(false); eventually use for objectPooling
-        }
-    }
-
-    void AddIfTrue(int laneNum, bool potentialLane)
-    {
-
-        if (potentialLane) { acceptableLanes.Add(laneNum, potentialLane); Debug.Log("Adding lane: " + laneNum); }
     }
 }
