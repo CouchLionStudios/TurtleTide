@@ -5,9 +5,11 @@ using UnityEngine;
 /// BasicEnemy.cs is attached to each object that harms the player on contact.
 /// This is different than a platform which can harm the player if they get stuck on it, but not on contact
 /// </summary>
+
 public class BasicEnemy : MonoBehaviour
 {
     public float forwardSpeed = .05f;
+
 
     [Header("Potential Lanes")]
     // Use in inspector; these will determine where the user can spawn our given prefab
@@ -29,6 +31,7 @@ public class BasicEnemy : MonoBehaviour
     /// </summary>
     public void GetAllSpawnables()
     {
+        // this is the list we use for coding
         AddIfTrue(-1, isLeftSpawnable);
         AddIfTrue(0, isCenterSpawnable);
         AddIfTrue(1, isRightSpawnable);
@@ -54,5 +57,21 @@ public class BasicEnemy : MonoBehaviour
     void AddIfTrue(int laneNum, bool isUseableLane)
     {
         if (isUseableLane) { acceptableLanes.Add(laneNum, isUseableLane); Debug.Log("BasicEnemy.cs - AddIfTrue lane: " + laneNum); }
+    // Update is called once per frame
+    void Update()
+    {
+        transform.Translate(0, 0, -forwardSpeed);
+        if(transform.position.z < -80)
+        {
+            Debug.Log("Pew");
+            Destroy(gameObject);
+            //gameObject.SetActive(false); eventually use for objectPooling
+        }
+    }
+
+    void AddIfTrue(int laneNum, bool potentialLane)
+    {
+
+        if (potentialLane) { acceptableLanes.Add(laneNum, potentialLane); Debug.Log("Adding lane: " + laneNum); }
     }
 }

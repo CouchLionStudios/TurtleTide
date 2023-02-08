@@ -3,6 +3,10 @@ using UnityEngine;
 /// <summary>
 /// LevelController.cs is for actual level changes, such as managing new ground, enmvironment changes, etc.
 /// </summary>
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class LevelController : MonoBehaviour
 {
     [SerializeField] SpawnerController spawner;
@@ -31,6 +35,7 @@ public class LevelController : MonoBehaviour
 
         currentGroundHeight = UnityEngine.Random.Range(-1, 2);
         Debug.Log("LevelController.cs - ChangeHeight() currentGroundHeight: " + currentGroundHeight);
+
         int newYHeight = groundSpace * currentGroundHeight;
         transform.position = new Vector3(transform.position.x, transform.position.y + newYHeight, transform.position.z);
         spawner.transform.position = new Vector3(spawner.transform.position.x, spawner.transform.position.y + newYHeight, spawner.transform.position.z);

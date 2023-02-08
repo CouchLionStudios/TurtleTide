@@ -44,6 +44,7 @@ public class SpawnerController : MonoBehaviour
 
         GameObject newSpawnable = Instantiate(potentialObstacles[UnityEngine.Random.Range(0, potentialObstacles.Count)], transform);
         BasicEnemy enemyScript = newSpawnable.GetComponent<BasicEnemy>();
+
         enemyScript.GetAllSpawnables();
 
         // Get a random viable lane, but dont repeat it more than twice
@@ -56,6 +57,7 @@ public class SpawnerController : MonoBehaviour
 
         // set up our variables and send it off
         newSpawnable.transform.position = new Vector3(transform.position.x + (currentLane * laneDistance), transform.position.y, transform.position.z);
+
         enemyScript.forwardSpeed = forwardSpeed; 
 
         //update our random number checkers

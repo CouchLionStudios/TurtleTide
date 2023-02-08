@@ -24,10 +24,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravityValue;
 
     [SerializeField] GameObject mainCanvas;
-
     PlayerInput playerInput;
     
-
     // Start is called before the first frame update
     void Start()
     {
@@ -69,6 +67,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
     /// <summary>
     /// Checks if testValue is between bound1 and bound2, and returns the result in true/false.
     /// </summary>
