@@ -3,10 +3,6 @@ using UnityEngine;
 /// <summary>
 /// LevelController.cs is for actual level changes, such as managing new ground, enmvironment changes, etc.
 /// </summary>
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class LevelController : MonoBehaviour
 {
     [SerializeField] SpawnerController spawner;
